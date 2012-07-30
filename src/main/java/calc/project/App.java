@@ -130,19 +130,19 @@ public class App
         				flag = 0;
         				dotFlag = openP = signFlag = false;
         			}
-          			if(flag == 0)
+          			
         				--countP;
         			
         			if(countP < 0)	{
-        				
-        				throw new IllegalArgumentException("Invalid input.");
+  
+        				throw new IllegalArgumentException("Position " + (i+1) + ": Incorrect input of Close Parenthesis.");
         			}
         			
         		}
         		else if(flag == 1 && openP && signFlag && (isDot(ch) || Character.isDigit(ch))){
         			if(isDot(ch))	{
-        				if(dotFlag == true)	{
-            				throw new IllegalArgumentException("Invalid input.");
+        				if(dotFlag)	{
+            				throw new IllegalArgumentException("Position " + (i+1) + ": Incorrect input of Dot.");
             			}
             			dotFlag = true;
             			temp += ch;
@@ -154,7 +154,7 @@ public class App
         		}
         		else if(flag == 1 && openP && ch == '-')	{
         			if(signFlag)	{
-        				throw new IllegalArgumentException("Invalid input.");
+        				throw new IllegalArgumentException("Incorrect input. Expect number.");
         			}
         			signFlag = true;
         		}
@@ -172,8 +172,8 @@ public class App
         		}
         		
         		else if(flag == 1 && isDot(ch))	{
-        			if(dotFlag == true)	{
-        				throw new IllegalArgumentException("Invalid input.");
+        			if(dotFlag)	{
+        				throw new IllegalArgumentException("Position " + (i+1) + ": Incorrect input of Dot. ");
         			}
         			dotFlag = true;
         			temp += ch;
@@ -195,33 +195,35 @@ public class App
         			++numKey;
         		}
         		
-        		else if(isCloseParenthesis(ch))	{
-  
-        		}
-        		
         		else {
-      
-        			throw new IllegalArgumentException("Invalid input.");
+        			if(flag == 0)
+        				throw new IllegalArgumentException("Position " + (i+1) + ": Expect operation.");
+        			else if (flag == 1)
+        				throw new IllegalArgumentException("Position " + (i+1) + ": Expect number.");
+        			else
+        				throw new IllegalArgumentException("Invalid input.");
         		}
         	}
         	
         	else	{
         		
-        		throw new IllegalArgumentException("Invalid input.");
+        		throw new IllegalArgumentException(" Input correct expression. For example  3*4-2");
         	}
-        }
-        
-        if(flag == 1)	{
-        	
-        	throw new IllegalArgumentException("Invalid input.");
         }
         
         if(countP != 0)	{
         	
-        	throw new IllegalArgumentException("Invalid input.");
+        	throw new IllegalArgumentException("You haven't close all Parentheses.");
         }
+        
+        if(flag == 1)	{
+        	
+        	throw new IllegalArgumentException("You haven't input number after last operation.");
+        }
+        
 		
 		return ;
+        
 	}
 	
 
