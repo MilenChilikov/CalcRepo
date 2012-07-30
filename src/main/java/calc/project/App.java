@@ -1,5 +1,7 @@
 package calc.project;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -7,7 +9,7 @@ import java.util.Scanner;
 
 public class App 
 {
-	public Map<Integer, Integer> numbers = new HashMap<Integer, Integer>();
+	public Map<Integer, BigDecimal> numbers = new HashMap<Integer, BigDecimal>();
 	public Map<Integer, Integer> operations = new HashMap<Integer, Integer>();
 	public Iterator<Integer> it;
 	public char oper[];
@@ -33,7 +35,7 @@ public class App
 		return showSteps;
 	}
 	
-	public static boolean  isOperation(char ch){
+	private static boolean  isOperation(char ch){
 		boolean flag = false;
 		switch(ch){
 			case '+':
@@ -47,7 +49,14 @@ public class App
 		return flag;
 	}
 	
-	public static boolean  isParenthesis(char ch){
+	private static boolean isDot(char ch) {
+		if(ch == '.')
+			return true;
+		else
+			return false;
+	}
+	
+	private static boolean  isParenthesis(char ch){
 		boolean flag = false;
 		switch(ch){
 			case '(':
@@ -59,14 +68,14 @@ public class App
 		return flag;
 	}
 	
-	public static boolean isOpenParenthesis(char ch){
+	private static boolean isOpenParenthesis(char ch){
 		if(ch == '(')
 			return true;
 		else 
 			return false;
 	}
 	
-	public static boolean isCloseParenthesis(char ch){
+	private static boolean isCloseParenthesis(char ch){
 		if(ch == ')')
 			return true;
 		else 
@@ -74,7 +83,7 @@ public class App
 	}
 		
 	
-	public static Integer getPriority(char ch){
+	private static Integer getPriority(char ch){
 
 		switch(ch)	{
 			case '+':
@@ -85,48 +94,94 @@ public class App
 		}
 	}
 	
-	public static Integer getResultOf(Integer a, Integer b, char c)	{
+	private static BigDecimal getResultOf(BigDecimal a, BigDecimal b, char c)	{
 		
 		switch(c)	{
 			case '+':
-				return a + b;
+				return a.add(b);
 			case '-':
-				return a - b;
+				return a.subtract(b);
 			case '*':
-				return a * b;
+				return a.multiply(b);
 			default:
-				return  a / b;
+				return  a.divide(b, 20, RoundingMode.HALF_UP);
 		}
 	}
 	
-	private Integer input(String str)	{
+	private void input(String str)	{
 		
 		char ch;
     	int flag = 1, countP = 0;
+    	boolean openP = false, signFlag = false,  dotFlag = false;
+    	
     	Integer numKey = 1;
     	String temp = "";
     	
     	oper = new char[str.length()/2 + 1];
-        
+   
         for(int i = 0; i < str.length(); ++i)	{
         	ch = str.charAt(i);
         	
-        	if(Character.isDigit(ch) || isOperation(ch) || isParenthesis(ch))	{
-        		if(flag == 1 && Character.isDigit(ch))	{
+        	if(Character.isDigit(ch) || isOperation(ch) || isParenthesis(ch) || isDot(ch))	{
+        		if(isCloseParenthesis(ch))	{
+        			if(flag == 1 && openP && signFlag)	{
+           				numbers.put(numKey, new BigDecimal(temp).negate());
+        				temp = "";
+        				flag = 0;
+        				dotFlag = openP = signFlag = false;
+        			}
+          			if(flag == 0)
+        				--countP;
         			
-        			if(i  != str.length()-1 && Character.isDigit(str.charAt(i+1)))	{
+        			if(countP < 0)	{
+        				
+        				throw new IllegalArgumentException("Invalid input.");
+        			}
+        			
+        		}
+        		else if(flag == 1 && openP && signFlag && (isDot(ch) || Character.isDigit(ch))){
+        			if(isDot(ch))	{
+        				if(dotFlag == true)	{
+            				throw new IllegalArgumentException("Invalid input.");
+            			}
+            			dotFlag = true;
+            			temp += ch;
+        			}
+        			else	{
+        				
+            			temp += ch;
+        			}
+        		}
+        		else if(flag == 1 && openP && ch == '-')	{
+        			if(signFlag)	{
+        				throw new IllegalArgumentException("Invalid input.");
+        			}
+        			signFlag = true;
+        		}
+        		else if(flag == 1 && Character.isDigit(ch))	{
+        			if(i  != str.length()-1 && (Character.isDigit(str.charAt(i+1)) || isDot(str.charAt(i+1))))	{
         				temp += ch;
         				continue;
         			}
         			
         			temp += ch;
-        			numbers.put(numKey, Integer.parseInt(temp));
+        			numbers.put(numKey, new BigDecimal(temp));
         			temp = "";
         			flag = 0;
+        			dotFlag = openP = signFlag = false;
+        		}
+        		
+        		else if(flag == 1 && isDot(ch))	{
+        			if(dotFlag == true)	{
+        				throw new IllegalArgumentException("Invalid input.");
+        			}
+        			dotFlag = true;
+        			temp += ch;
         		}
         		
         		else if(flag == 1 && isOpenParenthesis(ch))	{
         			++countP;
+        			openP = true;
         		}
         		
         		else if(flag == 0 && isOperation(ch))	{
@@ -136,20 +191,16 @@ public class App
         			operations.put(numKey, prior);
         			flag = 1;
         			oper[numKey] = ch;
+        			dotFlag = openP = signFlag = false;
         			++numKey;
         		}
         		
-        		else if(flag == 0 && isCloseParenthesis(ch))	{
-        			
-        			--countP;
-        			if(countP < 0)	{
-        				
-        				throw new IllegalArgumentException("Invalid input.");
-        			}
+        		else if(isCloseParenthesis(ch))	{
+  
         		}
         		
         		else {
-        			
+      
         			throw new IllegalArgumentException("Invalid input.");
         		}
         	}
@@ -170,13 +221,15 @@ public class App
         	throw new IllegalArgumentException("Invalid input.");
         }
 		
-		return 0;
+		return ;
 	}
 	
-	private int parse(){
+
+	private BigDecimal parse(){
 		
         it = operations.keySet().iterator();
-        int privKey, currKey, nextKey, len = numbers.size(), result = 0;
+        int privKey, currKey, nextKey, len = numbers.size();
+        BigDecimal result = null;
         
         privKey = currKey = (Integer) it.next();
         
@@ -184,7 +237,7 @@ public class App
         	nextKey = (Integer) it.next();
         else	{
         	
-        	if(numbers.get(currKey+1) == 0 && oper[currKey] == '/')	{
+        	if(numbers.get(currKey+1).doubleValue() == 0 && oper[currKey] == '/')	{
         		System.out.println("Trying to compute " + numbers.get(currKey) + oper[currKey] + numbers.get(currKey+1));
         		throw new ArithmeticException("Can't divide by zero.");
         	}
@@ -205,7 +258,7 @@ public class App
         		
         		if(operations.get(privKey) <= operations.get(currKey) && operations.get(currKey) >= operations.get(nextKey))	{
         			
-        			if(numbers.get(nextKey) == 0 && oper[currKey] == '/')	{
+        			if(numbers.get(nextKey).doubleValue() == 0 && oper[currKey] == '/')	{
         				System.out.println("Trying to compute " + numbers.get(currKey) + oper[currKey] + numbers.get(nextKey));
         				throw new ArithmeticException("Can't divide by zero.");
                 	}
@@ -235,7 +288,7 @@ public class App
         		it = operations.keySet().iterator();
     			currKey = it.next();
     			
-    			if(numbers.get(len) == 0 && oper[currKey] == '/')	{
+    			if(numbers.get(len).doubleValue() == 0 && oper[currKey] == '/')	{
     				System.out.println("Trying to compute " + numbers.get(currKey) + oper[currKey] + numbers.get(len));
     				throw new ArithmeticException("Can't divide by zero.");
             	}
@@ -252,7 +305,7 @@ public class App
         	
         	else if(operations.get(currKey) >= operations.get(nextKey) && operations.get(currKey) >= operations.get(privKey))	{ 
         		
-        		if(numbers.get(nextKey) == 0 && oper[currKey] == '/')	{
+        		if(numbers.get(nextKey).doubleValue() == 0 && oper[currKey] == '/')	{
         			System.out.println("Trying to compute " + numbers.get(currKey) + oper[currKey] + numbers.get(currKey));
         			throw new ArithmeticException("Can't divide by zero.");
             	}
@@ -275,7 +328,7 @@ public class App
 
         	else if(operations.get(nextKey) >= operations.get(currKey))	{
         		
-        		if(numbers.get(len) == 0 && oper[nextKey] == '/')	{
+        		if(numbers.get(len).doubleValue() == 0 && oper[nextKey] == '/')	{
         			System.out.println("Trying to compute " + numbers.get(nextKey) + oper[nextKey] + numbers.get(len));
             		throw new ArithmeticException("Can't divide by zero.");
             		
@@ -301,23 +354,62 @@ public class App
         return result;	
 	}
 	
-	public Integer function(String str)	{
+	private BigDecimal f(BigDecimal b)	{
+		
+		String str = b.toString();
+		
+		if(str.indexOf('.') == -1)
+			return b;
+		if(b.subtract(b.setScale(0, BigDecimal.ROUND_FLOOR)) == new BigDecimal(0))
+				return b.setScale(0, BigDecimal.ROUND_FLOOR);
+	
+		int len = str.length()-1 - str.indexOf('.');
+
+		for(int i = str.length()-1; i >= 0; --i)	{
+			if(str.charAt(i) == '0')
+				--len;
+			else 
+				break;
+		}
+		
+		b = b.setScale(len, BigDecimal.ROUND_HALF_UP);
+		
+		return b;
+	}
+	
+	private BigDecimal function(String str)	{
 		input(str);
 		return parse();
+	}
+	
+	private void show()	{
+		it = numbers.keySet().iterator();
+		System.out.println("Numbers: ");
+		
+		while(it.hasNext()){
+			Integer i = it.next();
+			System.out.println("Key " + i + ", Value " + numbers.get(i));
+		}
+		System.out.println("Operators ");
+		it = operations.keySet().iterator();
+		while(it.hasNext()){
+			Integer i = it.next();
+			System.out.println("Key " + i + ", operation " + oper[i] + ", Priority " + numbers.get(i));
+		}
 	}
 	
 	
     public static void main( String[] args )
     {
-    	int result;
-    	boolean flag;
+    	BigDecimal result;
+    	boolean flag = true;
     	
     	Scanner sc = new Scanner(System.in);
         String str;
         
         
-        System.out.println("Show steps true/false: ");
-        flag = sc.nextBoolean();
+//        System.out.println("Show steps true/false: ");
+//        flag = sc.nextBoolean();
         
         System.out.println("Enter expression: ");
         str = sc.next();
@@ -327,7 +419,8 @@ public class App
         try	{
         	
         result = myApp.function(str);
-        System.out.println("The result is " + result + ".");
+        System.out.println("The result is " + myApp.f(result));
+  
         
         }	catch	(IllegalArgumentException exc)	{
         		System.out.println(exc.getMessage());
