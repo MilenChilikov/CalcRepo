@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.015" errors="0" skipped="0" tests="1" name="calc.project.AppTest">
+<testsuite failures="0" time="0.027" errors="0" skipped="0" tests="1" name="calc.project.AppTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/home/ge/apps/jdk1.6.0_33/jre/lib/amd64"/>
@@ -19,7 +19,7 @@
     <property name="basedir" value="/home/ge/dev/workspace/calculator"/>
     <property name="java.endorsed.dirs" value="/home/ge/apps/jdk1.6.0_33/jre/lib/endorsed"/>
     <property name="os.arch" value="amd64"/>
-    <property name="surefire.real.class.path" value="/tmp/surefirebooter3108735503786337144.jar"/>
+    <property name="surefire.real.class.path" value="/tmp/surefirebooter2569570862368956188.jar"/>
     <property name="java.io.tmpdir" value="/tmp"/>
     <property name="line.separator" value="
 "/>
@@ -27,7 +27,7 @@
     <property name="os.name" value="Linux"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
     <property name="java.library.path" value="/home/ge/apps/jdk1.6.0_33/jre/lib/amd64/server:/home/ge/apps/jdk1.6.0_33/jre/lib/amd64:/home/ge/apps/jdk1.6.0_33/jre/../lib/amd64:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib"/>
-    <property name="surefire.test.class.path" value="/home/ge/dev/workspace/calculator/target/test-classes:/home/ge/dev/workspace/calculator/target/classes:/home/ge/.m2/repository/junit/junit/3.8.1/junit-3.8.1.jar:"/>
+    <property name="surefire.test.class.path" value="/home/ge/dev/workspace/calculator/target/test-classes:/home/ge/dev/workspace/calculator/target/classes:/home/ge/.m2/repository/junit/junit/4.10/junit-4.10.jar:/home/ge/.m2/repository/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar:"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.class.version" value="50.0"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
@@ -38,11 +38,11 @@
     <property name="file.encoding" value="UTF-8"/>
     <property name="java.specification.version" value="1.6"/>
     <property name="user.name" value="ge"/>
-    <property name="java.class.path" value="/home/ge/dev/workspace/calculator/target/test-classes:/home/ge/dev/workspace/calculator/target/classes:/home/ge/.m2/repository/junit/junit/3.8.1/junit-3.8.1.jar:"/>
+    <property name="java.class.path" value="/home/ge/dev/workspace/calculator/target/test-classes:/home/ge/dev/workspace/calculator/target/classes:/home/ge/.m2/repository/junit/junit/4.10/junit-4.10.jar:/home/ge/.m2/repository/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar:"/>
     <property name="java.vm.specification.version" value="1.0"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="/home/ge/apps/jdk1.6.0_33/jre"/>
-    <property name="sun.java.command" value="/tmp/surefirebooter3108735503786337144.jar /tmp/surefire4001595730896072228tmp /tmp/surefire5414630545242739725tmp"/>
+    <property name="sun.java.command" value="/tmp/surefirebooter2569570862368956188.jar /tmp/surefire3550184369605051427tmp /tmp/surefire2173211176952538153tmp"/>
     <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
     <property name="user.language" value="en"/>
     <property name="java.vm.info" value="mixed mode"/>
