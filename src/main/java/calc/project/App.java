@@ -22,11 +22,11 @@ public class App
 		showSteps = flag;
 	}
 	
-	public boolean get()	{
+	public boolean getShowSteps()	{
 		return showSteps;
 	}
 	
-	public void set(boolean b)	{
+	public void setShowSteps(boolean b)	{
 		showSteps = b;
 	}
 	
@@ -95,19 +95,19 @@ public class App
 		}
 	}
 	
-	public BigDecimal getResultOf(BigDecimal a, BigDecimal b, char c)	{
+	public BigDecimal getTwoNumbersAndOperationAndDoOperation(BigDecimal a, BigDecimal b, char c)	{
 		
 		switch(c)	{
 			case '+':
-				return f(a.add(b));
+				return roundBigDecimal(a.add(b));
 			case '-':
-				return f(a.subtract(b));
+				return roundBigDecimal(a.subtract(b));
 			case '*':
-				return f(a.multiply(b));
+				return roundBigDecimal(a.multiply(b));
 			case '/':
-				if(new BigDecimal(0).equals(b))
+				if(BigDecimal.ZERO.equals(b))
 					throw new ArithmeticException();
-				return  f(a.divide(b, 20, RoundingMode.HALF_UP));
+				return  roundBigDecimal(a.divide(b, 20, RoundingMode.HALF_UP));
 			default:
 				throw new IllegalArgumentException();
 		}
@@ -226,7 +226,7 @@ public class App
         } 
 	}
           
-	public BigDecimal parse()	{
+	public BigDecimal parseAndGetResult()	{
 		
         it = operations.keySet().iterator();
         int privKey, currKey, nextKey, len = numbers.size();
@@ -242,16 +242,18 @@ public class App
         else	{
         	
         	if(numbers.get(currKey+1).doubleValue() == 0 && oper[currKey] == '/')	{
-        		System.out.println("Trying to compute " + f(numbers.get(currKey)) + oper[currKey] + f(numbers.get(currKey+1)));
+        		System.out.println("Trying to compute " + roundBigDecimal(numbers.get(currKey)) + 
+        				oper[currKey] + roundBigDecimal(numbers.get(currKey+1)));
         		throw new ArithmeticException("Can't divide by zero.");
         	}
         	
         	if(isShowSteps())	{
-				System.out.println("Compute " + f(numbers.get(currKey)) + " " + oper[currKey] + " " + f(numbers.get(currKey+1)) + 
-					" = " + f(getResultOf(numbers.get(currKey), numbers.get(currKey+1), oper[currKey])));
+				System.out.println("Compute " + roundBigDecimal(numbers.get(currKey)) + " " + oper[currKey] +
+					" " + roundBigDecimal(numbers.get(currKey+1)) + " = " + 
+					roundBigDecimal(getTwoNumbersAndOperationAndDoOperation(numbers.get(currKey), numbers.get(currKey+1), oper[currKey])));
 			}
         	
-        	result = getResultOf(numbers.get(currKey), numbers.get(currKey+1), oper[currKey]);
+        	result = getTwoNumbersAndOperationAndDoOperation(numbers.get(currKey), numbers.get(currKey+1), oper[currKey]);
         	
         	return result;
         }
@@ -263,16 +265,18 @@ public class App
         		if(operations.get(privKey) <= operations.get(currKey) && operations.get(currKey) >= operations.get(nextKey))	{
         			
         			if(numbers.get(nextKey).doubleValue() == 0 && oper[currKey] == '/')	{
-        				System.out.println("Trying to compute " + f(numbers.get(currKey)) + oper[currKey] + f(numbers.get(nextKey)));
+        				System.out.println("Trying to compute " + roundBigDecimal(numbers.get(currKey)) +
+        						oper[currKey] + roundBigDecimal(numbers.get(nextKey)));
         				throw new ArithmeticException("Can't divide by zero.");
                 	}
         			
         			if(isShowSteps())	{
-        				System.out.println("Compute " + f(numbers.get(currKey)) + " " + oper[currKey] + " " + f(numbers.get(nextKey)) + 
-        					" = " + f(getResultOf(numbers.get(currKey), numbers.get(nextKey), oper[currKey])));
+        				System.out.println("Compute " + roundBigDecimal(numbers.get(currKey)) + " "
+        					+ oper[currKey] + " " + roundBigDecimal(numbers.get(nextKey)) + " = " + 
+        					roundBigDecimal(getTwoNumbersAndOperationAndDoOperation(numbers.get(currKey), numbers.get(nextKey), oper[currKey])));
         			}
         				
-        			numbers.put(nextKey, getResultOf(numbers.get(currKey), numbers.get(nextKey), oper[currKey]));	
+        			numbers.put(nextKey, getTwoNumbersAndOperationAndDoOperation(numbers.get(currKey), numbers.get(nextKey), oper[currKey]));	
         			numbers.remove(currKey);
         			operations.remove(currKey);
         			
@@ -293,16 +297,17 @@ public class App
     			currKey = it.next();
     			
     			if(numbers.get(len).doubleValue() == 0 && oper[currKey] == '/')	{
-    				System.out.println("Trying to compute " + f(numbers.get(currKey)) + oper[currKey] + f(numbers.get(len)));
+    				System.out.println("Trying to compute " + roundBigDecimal(numbers.get(currKey)) 
+    						+ oper[currKey] + roundBigDecimal(numbers.get(len)));
     				throw new ArithmeticException("Can't divide by zero.");
             	}
     			
     			if(isShowSteps())	{
-    				System.out.println("Compute " + f(numbers.get(currKey)) + " " + oper[currKey] + " " + f(numbers.get(len)) + 
-    					" = " + f(getResultOf(numbers.get(currKey), numbers.get(len), oper[currKey])));
+    				System.out.println("Compute " + roundBigDecimal(numbers.get(currKey)) + " " + oper[currKey] + " " +
+    					roundBigDecimal(numbers.get(len)) + " = " + roundBigDecimal(getTwoNumbersAndOperationAndDoOperation(numbers.get(currKey), numbers.get(len), oper[currKey])));
     			}
     				
-            	result = getResultOf(numbers.get(currKey), numbers.get(len), oper[currKey]);
+            	result = getTwoNumbersAndOperationAndDoOperation(numbers.get(currKey), numbers.get(len), oper[currKey]);
             	
             	return result;
         	}
@@ -310,16 +315,18 @@ public class App
         	else if(operations.get(currKey) >= operations.get(nextKey) && operations.get(currKey) >= operations.get(privKey))	{ 
         		
         		if(numbers.get(nextKey).doubleValue() == 0 && oper[currKey] == '/')	{
-        			System.out.println("Trying to compute " + f(numbers.get(currKey)) + oper[currKey] + f(numbers.get(currKey)));
+        			System.out.println("Trying to compute " + 
+        					roundBigDecimal(numbers.get(currKey)) + oper[currKey] + roundBigDecimal(numbers.get(currKey)));
         			throw new ArithmeticException("Can't divide by zero.");
             	}
         		
         		if(isShowSteps())	{
-        			System.out.println("Compute " + f(numbers.get(currKey)) + " " + oper[currKey] + " " + f(numbers.get(nextKey)) + 
-       					" = " + f(getResultOf(numbers.get(currKey), numbers.get(nextKey), oper[currKey])));
+        			System.out.println("Compute " + roundBigDecimal(numbers.get(currKey)) + " " + oper[currKey] + 
+        					" " + roundBigDecimal(numbers.get(nextKey)) + 
+       					" = " + roundBigDecimal(getTwoNumbersAndOperationAndDoOperation(numbers.get(currKey), numbers.get(nextKey), oper[currKey])));
         		}
         			
-       			numbers.put(nextKey, getResultOf(numbers.get(currKey), numbers.get(nextKey), oper[currKey]));
+       			numbers.put(nextKey, getTwoNumbersAndOperationAndDoOperation(numbers.get(currKey), numbers.get(nextKey), oper[currKey]));
        			numbers.remove(currKey);
        			operations.remove(currKey);
        			
@@ -333,17 +340,17 @@ public class App
         	else if(operations.get(nextKey) >= operations.get(currKey))	{
         		
         		if(numbers.get(len).doubleValue() == 0 && oper[nextKey] == '/')	{
-        			System.out.println("Trying to compute " + f(numbers.get(nextKey)) + oper[nextKey] + f(numbers.get(len)));
+        			System.out.println("Trying to compute " + roundBigDecimal(numbers.get(nextKey)) + oper[nextKey] + roundBigDecimal(numbers.get(len)));
             		throw new ArithmeticException("Can't divide by zero.");
             		
             	}
         		
         		if(isShowSteps())	{
-        			System.out.println("Compute " + f(numbers.get(nextKey)) + " " + oper[nextKey] + " " + f(numbers.get(len)) + 
-    					" = " + f(getResultOf(numbers.get(nextKey), numbers.get(len), oper[nextKey])));
+        			System.out.println("Compute " + roundBigDecimal(numbers.get(nextKey)) + " " + oper[nextKey] + " " + 
+        					roundBigDecimal(numbers.get(len)) + " = " + roundBigDecimal(getTwoNumbersAndOperationAndDoOperation(numbers.get(nextKey), numbers.get(len), oper[nextKey])));
         		}
         			
-        		numbers.put(len, getResultOf(numbers.get(nextKey), numbers.get(len), oper[nextKey]));
+        		numbers.put(len, getTwoNumbersAndOperationAndDoOperation(numbers.get(nextKey), numbers.get(len), oper[nextKey]));
         		numbers.remove(nextKey);
         		operations.remove(nextKey);
         		
@@ -358,7 +365,7 @@ public class App
         return result;	
 	}
 	
-	public BigDecimal f(BigDecimal b)	{
+	public BigDecimal roundBigDecimal(BigDecimal b)	{
 		
 		String str = b.toString();
 		
@@ -381,9 +388,9 @@ public class App
 		return b;
 	}
 	
-	public BigDecimal function(String str)	{
+	public BigDecimal inputAndParse(String str)	{
 		input(str);
-		return f(parse());
+		return roundBigDecimal(parseAndGetResult());
 	}
 	
 	public void show()	{

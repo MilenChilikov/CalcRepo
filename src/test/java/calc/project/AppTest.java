@@ -25,29 +25,28 @@ public class AppTest {
 	}
 	
 	@Test
-	public void fTest()	{
-		assertEquals( new BigDecimal(12.345), app.f( new BigDecimal(12.34500)));
-		assertEquals(BigDecimal.ZERO, app.f( new BigDecimal(0.0000)));
-		assertEquals( new BigDecimal(1200), app.f( new BigDecimal(1200.0)));
-		assertEquals( new BigDecimal(1.05), app.f( new BigDecimal(1.0500)));
+	public void roundBigDecimalTest()	{
+		assertEquals( new BigDecimal(12.345), app.roundBigDecimal( new BigDecimal(12.34500)));
+		assertEquals(BigDecimal.ZERO, app.roundBigDecimal( new BigDecimal(0.0000)));
+		assertEquals( new BigDecimal(1200), app.roundBigDecimal( new BigDecimal(1200.0)));
+		assertEquals( new BigDecimal(1.05), app.roundBigDecimal( new BigDecimal(1.0500)));
 	}
 	
 	@Test
-	public void functionTest1()	{
-		assertEquals(new BigDecimal(3), app.function("(1+3)/2+1"));
-		assertEquals(new BigDecimal(0), app.function("((6+4)/2-1.5*(10-6))+1"));
+	public void inputAndParseTest1()	{
+		assertEquals(new BigDecimal(3), app.inputAndParse("(1+3)/2+1+(0*4)/12"));
 	}
 	
 	@Test
-	public void functionTest2()	{
-		assertEquals(new BigDecimal(0), app.function("((6+4)/2-1.5*(10-6))+1"));
+	public void inputAndParseTest2()	{
+		assertEquals(new BigDecimal(0), app.inputAndParse("((6+4)/2-1.5*(10-6))+1"));
 	}
 	
 	@Test
-	public void getTest()	{
-		assertFalse(app.get());
-		app.set(true);
-		assertTrue(app.get());
+	public void getShowStepsTest()	{
+		assertFalse(app.getShowSteps());
+		app.setShowSteps(true);
+		assertTrue(app.getShowSteps());
 	}
     
     @Test
@@ -68,12 +67,12 @@ public class AppTest {
     }
     
     @Test
-    public void getResultOfTest()	{
+    public void getTwoNumbersAndOperationAndDoOperationTest()	{
     	try	{
-    		assertEquals(BigDecimal.ONE, app.getResultOf(BigDecimal.ONE, BigDecimal.ZERO, '+'));
-    		assertEquals(new BigDecimal(-6), app.getResultOf(new BigDecimal(-4), new BigDecimal(2), '-'));
-    		assertEquals(BigDecimal.TEN, app.getResultOf(new BigDecimal(4), new BigDecimal(2.5), '*'));
-    		assertEquals(new BigDecimal(6.5), app.getResultOf(new BigDecimal(13), new BigDecimal(2), '/'));
+    		assertEquals(BigDecimal.ONE, app.getTwoNumbersAndOperationAndDoOperation(BigDecimal.ONE, BigDecimal.ZERO, '+'));
+    		assertEquals(new BigDecimal(-6), app.getTwoNumbersAndOperationAndDoOperation(new BigDecimal(-4), new BigDecimal(2), '-'));
+    		assertEquals(BigDecimal.TEN, app.getTwoNumbersAndOperationAndDoOperation(new BigDecimal(4), new BigDecimal(2.5), '*'));
+    		assertEquals(new BigDecimal(6.5), app.getTwoNumbersAndOperationAndDoOperation(new BigDecimal(13), new BigDecimal(2), '/'));
     	}	catch(ArithmeticException exc)	{
     			fail("Cannot divide by 0.");
     	}	catch(IllegalArgumentException exc)	{
@@ -82,13 +81,13 @@ public class AppTest {
     }
     
     @Test(expected = IllegalArgumentException.class)
-    public void getResultOfTestException1()	throws IllegalArgumentException, ArithmeticException	{
-    	app.getResultOf(BigDecimal.TEN, BigDecimal.ONE, '=');
+    public void getTwoNumbersAndOperationAndDoOperationTestException1()	throws IllegalArgumentException, ArithmeticException	{
+    	app.getTwoNumbersAndOperationAndDoOperation(BigDecimal.TEN, BigDecimal.ONE, '=');
     }
     
     @Test(expected = ArithmeticException.class)
-    public void getResultOfTestException2()	throws IllegalArgumentException, ArithmeticException	{
-    	app.getResultOf(BigDecimal.TEN, BigDecimal.ZERO, '/');
+    public void getTwoNumbersAndOperationAndDoOperationTestException2()	throws IllegalArgumentException, ArithmeticException	{
+    	app.getTwoNumbersAndOperationAndDoOperation(BigDecimal.TEN, BigDecimal.ZERO, '/');
     }
     
     @Test
@@ -146,18 +145,27 @@ public class AppTest {
 	public void isCloseParenthesisTest()	{
 		assertTrue(app.isCloseParenthesis(')'));
 		assertFalse(app.isCloseParenthesis('('));
+		assertFalse(app.isCloseParenthesis('+'));
+		assertFalse(app.isCloseParenthesis('6'));
+		assertFalse(app.isCloseParenthesis('b'));
 	}
 
 	@Test
 	public void isDot()	{
 		assertTrue(app.isDot('.'));
 		assertFalse(app.isDot(','));
+		assertFalse(app.isDot('-'));
+		assertFalse(app.isDot('8'));
+		assertFalse(app.isDot('s'));
 	}
 	
 	@Test
 	public void isOpenParenthesisTest()	{
 		assertTrue(app.isOpenParenthesis('('));
 		assertFalse(app.isOpenParenthesis(')'));
+		assertFalse(app.isOpenParenthesis('*'));
+		assertFalse(app.isOpenParenthesis('e'));
+		assertFalse(app.isOpenParenthesis('1'));
 	}
 	
 	@Test
@@ -168,6 +176,7 @@ public class AppTest {
 		assertTrue(app.isOperation('-'));
 		assertFalse(app.isOperation('='));
 		assertFalse(app.isOperation('t'));
+		assertFalse(app.isOperation('7'));
 	}
 	
 	@Test
@@ -176,27 +185,29 @@ public class AppTest {
 		assertTrue(app.isParenthesis(')'));
 		assertFalse(app.isParenthesis('.'));
 		assertFalse(app.isParenthesis('/'));
+		assertFalse(app.isParenthesis('0'));
+		assertFalse(app.isParenthesis('p'));
 	}
 	
 	@Test
 	public void isShowStepsTest()	{
-		app.set(true);
+		app.setShowSteps(true);
 		assertTrue(app.isShowSteps());
-		app.set(false);
+		app.setShowSteps(false);
 		assertFalse(app.isShowSteps());
 	}
 	
 	@Test
-	public void parseTest()	{
+	public void parseAndGetResultTest()	{
 		app.input("10+4-(3+2)*2.2");
-		assertEquals(new BigDecimal(3), app.parse());
+		assertEquals(new BigDecimal(3), app.parseAndGetResult());
 	}
 	
 	@Test
-	public void setTest()	{
-		app.set(false);
-		assertFalse(app.get());
-		app.set(true);
-		assertTrue(app.get());
+	public void setShowStepsTest()	{
+		app.setShowSteps(false);
+		assertFalse(app.getShowSteps());
+		app.setShowSteps(true);
+		assertTrue(app.getShowSteps());
 	}
   }

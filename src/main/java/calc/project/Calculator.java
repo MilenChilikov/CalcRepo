@@ -16,7 +16,7 @@ public class Calculator {
           
         try	{
         	
-        result = myApp.function(str);
+        result = myApp.inputAndParse(str);
         System.out.println("The result is " + result);
         
         }	catch	(IllegalArgumentException exc)	{
