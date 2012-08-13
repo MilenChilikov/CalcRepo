@@ -34,7 +34,7 @@ public class App
 		return showSteps;
 	}
 	
-	public boolean  isOperation(char ch){
+	public boolean  isOperation(char ch)	{
 		boolean flag = false;
 		switch(ch){
 			case '+':
@@ -48,14 +48,14 @@ public class App
 		return flag;
 	}
 	
-	public boolean isDot(char ch) {
+	public boolean isDot(char ch)	{
 		if(ch == '.')
 			return true;
 		else
 			return false;
 	}
 	
-	public boolean  isParenthesis(char ch){
+	public boolean  isParenthesis(char ch)	{
 		boolean flag = false;
 		switch(ch){
 			case '(':
@@ -67,21 +67,21 @@ public class App
 		return flag;
 	}
 	
-	public boolean isOpenParenthesis(char ch){
+	public boolean isOpenParenthesis(char ch)	{
 		if(ch == '(')
 			return true;
 		else 
 			return false;
 	}
 	
-	public boolean isCloseParenthesis(char ch){
+	public boolean isCloseParenthesis(char ch)	{
 		if(ch == ')')
 			return true;
 		else 
 			return false;
 	}	
 	
-	public Integer getPriority(char ch){
+	public Integer getPriority(char ch)	{
 
 		switch(ch)	{
 			case '+':
@@ -105,7 +105,7 @@ public class App
 			case '*':
 				return f(a.multiply(b));
 			case '/':
-				if(new BigDecimal("0").equals(b))
+				if(new BigDecimal(0).equals(b))
 					throw new ArithmeticException();
 				return  f(a.divide(b, 20, RoundingMode.HALF_UP));
 			default:
@@ -190,14 +190,13 @@ public class App
         		}
         		
         		else if(flag == 0 && isOperation(ch))	{
-        			
         			Integer prior = 0;
         			prior = getPriority(ch) + 3*countP;
         			operations.put(numKey, prior);
         			flag = 1;
-        			oper[numKey] = ch;
-        			dotFlag = openP = signFlag = false;
-        			++numKey;
+       				oper[numKey] = ch;
+       				dotFlag = openP = signFlag = false;
+       				++numKey;
         		}
         		
         		else {
@@ -227,14 +226,17 @@ public class App
         } 
 	}
           
-	public BigDecimal parse(){
+	public BigDecimal parse()	{
 		
         it = operations.keySet().iterator();
         int privKey, currKey, nextKey, len = numbers.size();
         BigDecimal result = null;
         
-        privKey = currKey = (Integer) it.next();
+        if(!it.hasNext())
+        	return new BigDecimal("" + numbers.get(1));
         
+        privKey = currKey = (Integer) it.next();
+        	
         if(it.hasNext())
         	nextKey = (Integer) it.next();
         else	{

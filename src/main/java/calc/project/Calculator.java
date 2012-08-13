@@ -1,15 +1,16 @@
 package calc.project;
 
 import java.math.BigDecimal;
+import java.util.Scanner;
 
 public class Calculator {
 
     public static void main(String[] args )
     {
-    	//Scanner sc = new Scanner(System.in);
-    	BigDecimal result = new BigDecimal(0);
+    	Scanner sc = new Scanner(System.in);
+    	BigDecimal result = BigDecimal.ZERO;
     	boolean flag = true;
-        String str = "((1+7)*6.125-24/4)*2";
+    	String str = sc.next();
    
         App myApp = new App(flag);
           
@@ -24,17 +25,5 @@ public class Calculator {
         }	catch(ArithmeticException exc)	{
         		System.out.println(exc.getMessage());
         }
-        myApp.input("((1+7)*6.125-24/4)*2");
-        //myApp.show();
-        System.out.println(myApp.oper.length);
-        myApp.it = myApp.operations.keySet().iterator();	
-        //Integer i = 0;
-    	/*while(i < myApp.oper.length){
-    		
-    		System.out.println("Position " + i + " with operation " + myApp.oper[i] + ".");
-    		i++;
-        }*/
-       // myApp.show();
-    	myApp = null;
     }
 }

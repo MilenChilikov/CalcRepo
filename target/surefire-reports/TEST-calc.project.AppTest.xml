@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.027" errors="0" skipped="0" tests="1" name="calc.project.AppTest">
+<testsuite failures="0" time="0.028" errors="0" skipped="0" tests="18" name="calc.project.AppTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/home/ge/apps/jdk1.6.0_33/jre/lib/amd64"/>
@@ -19,7 +19,7 @@
     <property name="basedir" value="/home/ge/dev/workspace/calculator"/>
     <property name="java.endorsed.dirs" value="/home/ge/apps/jdk1.6.0_33/jre/lib/endorsed"/>
     <property name="os.arch" value="amd64"/>
-    <property name="surefire.real.class.path" value="/tmp/surefirebooter2569570862368956188.jar"/>
+    <property name="surefire.real.class.path" value="/tmp/surefirebooter8684657983353453380.jar"/>
     <property name="java.io.tmpdir" value="/tmp"/>
     <property name="line.separator" value="
 "/>
@@ -42,7 +42,7 @@
     <property name="java.vm.specification.version" value="1.0"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="/home/ge/apps/jdk1.6.0_33/jre"/>
-    <property name="sun.java.command" value="/tmp/surefirebooter2569570862368956188.jar /tmp/surefire3550184369605051427tmp /tmp/surefire2173211176952538153tmp"/>
+    <property name="sun.java.command" value="/tmp/surefirebooter8684657983353453380.jar /tmp/surefire4430459223007343332tmp /tmp/surefire3794154336850116141tmp"/>
     <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
     <property name="user.language" value="en"/>
     <property name="java.vm.info" value="mixed mode"/>
@@ -58,5 +58,22 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="0.002" classname="calc.project.AppTest" name="testApp"/>
+  <testcase time="0.006" classname="calc.project.AppTest" name="fTest"/>
+  <testcase time="0.001" classname="calc.project.AppTest" name="functionTest1"/>
+  <testcase time="0" classname="calc.project.AppTest" name="functionTest2"/>
+  <testcase time="0" classname="calc.project.AppTest" name="getTest"/>
+  <testcase time="0" classname="calc.project.AppTest" name="getPriorityTest"/>
+  <testcase time="0" classname="calc.project.AppTest" name="getPriorityTestException"/>
+  <testcase time="0" classname="calc.project.AppTest" name="getResultOfTest"/>
+  <testcase time="0" classname="calc.project.AppTest" name="getResultOfTestException1"/>
+  <testcase time="0" classname="calc.project.AppTest" name="getResultOfTestException2"/>
+  <testcase time="0.001" classname="calc.project.AppTest" name="inputTest"/>
+  <testcase time="0" classname="calc.project.AppTest" name="isCloseParenthesisTest"/>
+  <testcase time="0" classname="calc.project.AppTest" name="isDot"/>
+  <testcase time="0" classname="calc.project.AppTest" name="isOpenParenthesisTest"/>
+  <testcase time="0" classname="calc.project.AppTest" name="isOperationTest"/>
+  <testcase time="0" classname="calc.project.AppTest" name="isParenthesisTest"/>
+  <testcase time="0" classname="calc.project.AppTest" name="isShowStepsTest"/>
+  <testcase time="0" classname="calc.project.AppTest" name="parseTest"/>
+  <testcase time="0" classname="calc.project.AppTest" name="setTest"/>
 </testsuite>
